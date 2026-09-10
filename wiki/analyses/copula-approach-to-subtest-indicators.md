@@ -13,6 +13,11 @@ sources:
   - wiki/topics/m-step-subscore-reporting.md
   - Betebenner & Braun, "Longitudinal Inference Without Longitudinal Data: A Sklar-Theoretic Extension of TAMP"
 tags: [analysis, subscores, copula, psychometrics, method]
+# The R below is in plain ```r fences, not ```{r} executable ones. It is
+# illustrative — it runs against student-level data this repo does not and must not
+# hold — so there is nothing to execute, and a plain fence keeps this page a .md
+# like the rest of the corpus. Quarto requires .qmd for executable code, and the
+# corpus convention is worth more here than a code cell would be.
 # Rendered to PDF as well as HTML: this is a memo addressed to a named presenter,
 # and the kind of thing that gets handed over or attached. It is also the only page
 # in the corpus carrying real mathematics, so it is what exercises the Noto Sans
@@ -229,6 +234,125 @@ Batch 3 should be specified differently.
 
 Step 3 alone is worth doing regardless. Michigan does not currently know the tail dependence
 structure of its own science subtests, and it bears on every subscore decision that follows.
+
+### What that looks like in code
+
+Sketched against the `copula` package, in the idiom of the sensitivity study. Nothing here is
+run — it is meant as a starting point to argue with, not a specification.
+
+```r
+library(copula)
+library(data.table)
+
+## 1. The observed trivariate sample --------------------------------------
+## One row per student; the three science subtest scores as columns. Grade 11
+## first, where the CT-PO deviance advantage over SBAC was largest.
+X <- as.matrix(dt_g11[, .(ES, LS, PS)])
+
+## 2. Pseudo-observations --------------------------------------------------
+## The rank transform. This is Sklar's theorem in one line: after it, the
+## marginals are gone and what remains is purely the dependence structure.
+## Ties broken at random per Genest et al. (2009) — with n in the hundreds of
+## thousands and a discrete scale score, ties are not a rounding detail.
+U <- pobs(X, ties.method = "random")
+```
+
+The fitting step is where the current assumption gets tested rather than inherited:
+
+```r
+## 3. Fit the candidate families ------------------------------------------
+## dispstr = "un" leaves all three pairwise correlations free. That is exactly
+## the committee's April question — "would it make a difference if you didn't
+## have the same correlation between the three?" — turned into a fitted
+## parameter instead of an assumption.
+fits <- list(
+  gaussian = fitCopula(normalCopula(dim = 3, dispstr = "un"), U, method = "mpl"),
+  t        = fitCopula(tCopula(dim = 3, dispstr = "un"),      U, method = "mpl"),
+  frank    = fitCopula(frankCopula(dim = 3),                  U, method = "mpl")
+)
+
+## Relative fit only. At Michigan's n every parametric family will be rejected
+## by a formal goodness-of-fit test — that was true across all 966 conditions in
+## the sensitivity study — so compare on information criteria and on fit in the
+## tails, never on p-values.
+data.table(
+  family = names(fits),
+  logLik = sapply(fits, logLik),
+  AIC    = sapply(fits, AIC),
+  BIC    = sapply(fits, BIC)
+)[order(AIC)]
+```
+
+Then read off what the dependence actually looks like. The `gaussian` row above is the model
+the simulation currently assumes; the gap between it and the best row is the size of the
+assumption:
+
+```r
+## 4. The structure, pair by pair ------------------------------------------
+best <- fits$t
+
+## Fitted correlation matrix, and the Kendall's tau it implies. For an
+## elliptical copula tau = (2/pi) * asin(rho), so this is exact rather than a
+## sample estimate. If the three off-diagonals differ materially, the single
+## correlation used in Batch 1 was averaging over real structure — and it
+## speaks directly to "why is life science different from the others?"
+P <- p2P(coef(best)[1:3], d = 3)
+tau_implied <- (2 / pi) * asin(P)
+
+## Degrees of freedom: the t-copula's tail-dependence dial. Large df means it is
+## behaving Gaussian and the family choice barely matters here. Small df means
+## joint extremes are far more common than a normal implies — which is the case
+## that would change the classification results.
+coef(best)[["df"]]
+
+## Tail dependence, per pair. lambda() is bivariate, so take it off the
+## two-dimensional margins. lambda_lower is the one that matters most: it is the
+## probability of joint low performance, and the Below Standard cut sits there.
+rbindlist(lapply(combn(3, 2, simplify = FALSE), function(ij) {
+  f2 <- fitCopula(tCopula(dim = 2), U[, ij], method = "mpl")
+  l  <- lambda(f2@copula)
+  data.table(pair         = paste(colnames(X)[ij], collapse = "-"),
+             tau          = tau(f2@copula),
+             lambda_lower = l[["lower"]],
+             lambda_upper = l[["upper"]])
+}))
+```
+
+And the substitution into the existing simulation, which is the part I want to stress is
+**small**:
+
+```r
+## 5. Swap the dependence model, keep everything else ----------------------
+## The marginals do not change. They stay the fitted three-component mixtures
+## from pages 5-7 of the deck. Only the copula is replaced. That is the whole
+## practical value of the Sklar factorisation here: this is a substitution in
+## the data-generating step, not a rewrite of the study.
+##
+## qgmm() is the inverse CDF of a fitted mixture — the marginal machinery
+## already in the pipeline.
+simulate_theta <- function(n, cop, gmm_by_subtest) {
+  U <- rCopula(n, cop)                                  # dependence
+  vapply(seq_along(gmm_by_subtest),                     # marginals, untouched
+         function(j) qgmm(U[, j], gmm_by_subtest[[j]]),
+         numeric(n))
+}
+
+theta_t        <- simulate_theta(n_sim, best@copula,          gmm_by_subtest)
+theta_gaussian <- simulate_theta(n_sim, fits$gaussian@copula, gmm_by_subtest)
+
+## Then run the existing CT-PO and SBAC classification on each and compare QWK.
+## Two informative outcomes, no uninformative one:
+##
+##   numbers agree  -> the dependence model is not what limits classification.
+##                     The ceiling is unidimensionality, and the reporting
+##                     question is the whole game.
+##   numbers differ -> Batch 1 was run at a dependence structure the data does
+##                     not exhibit, and Batch 3 should be specified from the fit.
+```
+
+Everything above runs on data already collected, and the only new dependency is the `copula`
+package. If it would help, I am happy to run the first pass myself against whatever extract is
+straightforward to share.
 
 ## A second place the same machinery applies
 

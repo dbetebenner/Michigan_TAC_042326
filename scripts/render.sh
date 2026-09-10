@@ -66,4 +66,7 @@ for d in "${DOCS[@]}"; do
 done
 pages=$(find _site/wiki -name '*.html' | wc -l | tr -d ' ')
 echo "    corpus pages rendered: $pages"
+
+echo "==> Checking the PDFs used the right fonts"
+./scripts/check-pdf-fonts.sh || fail=1
 [ "$fail" -eq 0 ] && echo "==> OK" || { echo "==> INCOMPLETE"; exit 1; }
