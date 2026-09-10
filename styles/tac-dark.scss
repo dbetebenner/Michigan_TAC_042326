@@ -1,0 +1,68 @@
+/*-- scss:defaults --*/
+// Michigan TAC — dark theme. Mirrors tac-light.scss; only the :root block below
+// differs. Borders are tempered with alpha rather than full-strength paper,
+// which would read as wires instead of hairlines.
+
+$body-bg:      #141410;
+$body-color:   #a8a29e;
+$link-color:   #98a384;   // forest-300
+$primary:      #fdf9f2;
+$code-color:   #f0a467;
+
+$font-family-sans-serif: "Noto Sans", "Fira Sans", system-ui, sans-serif;
+$headings-font-family:   "Josefin Sans", system-ui, sans-serif;
+
+$navbar-bg: transparent;
+$navbar-fg: #a8a29e;
+$footer-bg: #0c0a09;
+
+/*-- scss:rules --*/
+
+:root {
+  /* families */
+  --font-family-display: "Josefin Sans", system-ui, sans-serif;
+  --font-family-sans:    "Noto Sans", "Fira Sans", system-ui, sans-serif;
+  --font-family-mono:    "Noto Sans Mono", "SF Mono", Monaco, monospace;
+  --font-family-math:    "Noto Sans Math", "STIX Two Math", serif;
+
+  /* surfaces */
+  --color-surface-page:     #141410;
+  --color-surface-elevated: #1c1917;
+  --color-surface-code:     #1c1917;
+  --color-surface-subtle:   rgba(41, 37, 36, 0.6);
+  --color-surface-hover:    #292524;
+
+  /* content */
+  --color-content-primary:   #fdf9f2;   /* paper, never pure white */
+  --color-content-secondary: #a8a29e;
+  --color-content-muted:     #89827d;
+  --color-content-inverse:   #0c0a09;
+
+  /* borders — tempered to hairline strength */
+  --color-border-hairline: rgba(253, 249, 242, 0.14);
+  --color-border-moderate: rgba(253, 249, 242, 0.28);
+
+  /* interactive + accents */
+  --color-interactive-primary: #98a384;   /* forest-300 */
+  --color-interactive-hover:   #b3bda2;
+  --color-interactive-accent:  #6bb3e8;
+  --color-vertical-accent:     #b2bf22;
+  --color-editorial-rule:      #d46820;
+
+  /* recommendation status chips */
+  --color-status-open:     #6bb3e8;
+  --color-status-accepted: #9dc97a;
+  --color-status-declined: #e08878;
+  --color-status-progress: #e0a955;
+
+  /* footer */
+  --color-footer-surface:    #0c0a09;
+  --color-footer-border:     #292524;
+  --color-footer-text:       #a8a29e;
+  --color-footer-text-hover: #e7e5e4;
+
+  --shadow-card-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.45),
+                       0 4px 6px -4px rgba(0, 0, 0, 0.4);
+}
+
+@import "tac-core";

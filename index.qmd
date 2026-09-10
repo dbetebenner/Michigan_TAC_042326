@@ -1,0 +1,112 @@
+---
+pagetitle: "Michigan TAC — AI-Native Meeting Corpus"
+toc: false
+---
+
+::: {.di-eyebrow}
+Michigan OEAA / OEE Technical Advisory Committee
+:::
+
+# The April 2026 meeting, as a corpus
+
+::: {.di-lede}
+The April 23–24, 2026 TAC meeting produced a one-page agenda, five presentation artifacts, and
+nine pages of summary minutes. This site turns that material into something a committee can
+actually use between meetings — and argues that the whole TAC cycle should work this way.
+:::
+
+::: {.di-stats}
+::: {.di-stat}
+[98]{.di-stat-value}
+[corpus pages, fully cross-linked]{.di-stat-label}
+:::
+::: {.di-stat}
+[37]{.di-stat-value}
+[discrete recommendations, each with a status]{.di-stat-label}
+:::
+::: {.di-stat}
+[52]{.di-stat-value}
+[deck pages read as images to recover findings]{.di-stat-label}
+:::
+::: {.di-stat}
+[2]{.di-stat-value}
+[items explicitly promised for the fall]{.di-stat-label}
+:::
+:::
+
+## The two documents
+
+::: {.di-cards .di-cards-2}
+::: {.di-card}
+### [A Fuller Record](documents/meeting-summary-2026-04.qmd)
+
+A comprehensive summary of the April meeting, organised by issue rather than by clock.
+Built from the official minutes treated as a rough transcript, plus everything the minutes
+could not carry — the findings locked in chart images, the eight hidden slides, the two
+speaker notes, and the participation total the handout never prints.
+
+Written as a deliberate contrast to the official minutes.
+
+[HTML](documents/meeting-summary-2026-04.qmd) · [PDF](documents/meeting-summary-2026-04.pdf)
+:::
+
+::: {.di-card}
+### [Toward an AI-Native TAC](documents/ai-native-tac.qmd)
+
+A brief for Andrew Middlestead, Director of the Office of Educational Assessment and
+Accountability, on what changes if the committee's work is captured, structured, and carried
+forward as a corpus rather than as a document.
+
+Part I makes the case. Part II is the technical appendix for whoever would build it.
+
+[HTML](documents/ai-native-tac.qmd) · [PDF](documents/ai-native-tac.pdf)
+:::
+:::
+
+## The corpus
+
+The [corpus index](wiki/index.md) is the way in. A few useful entry points:
+
+- **[Open recommendations](wiki/recommendations/open-recommendations-april-2026.md)** — the
+  register. What the committee advised, to whom, and where each item stands. This is the page a
+  working meeting should be run against.
+- **[The meeting](wiki/meetings/2026-04-23-tac-meeting.md)** — roster, sessions, and the thread
+  running through them.
+- **[Glossary](wiki/glossary.md)** — AGP, NGA, CT-PO, QWK, MTTC, and the rest.
+
+Standing topics outlive any one meeting and are the unit of institutional memory:
+[adequate growth targets](wiki/topics/adequate-growth-targets.md),
+[subscore reporting](wiki/topics/m-step-subscore-reporting.md),
+[MTTC form security](wiki/topics/mttc-meaningfully-different-forms.md),
+[interim adoption](wiki/topics/smarter-balanced-interim-adoption.md).
+
+## Why bother
+
+::: {.di-editorial}
+The official minutes are competent. They are also lossy in ways that are specific and
+measurable: every question and every recommendation is attributed to "TAC" rather than to any of
+the five members present; a correlation is reported as "between 2.7 and 2.8"; the substance of a
+52-page simulation study reduces to a single sentence because it lives in pictures; and material
+that exists only in speaker notes — including the repeal of educator evaluations from state law —
+never surfaces at all.
+
+None of that is a failure of drafting. It is what happens when a two-day technical conversation
+has to become a nine-page document three weeks later, written by one person, with no way to
+represent a figure.
+:::
+
+The alternative is not a better document. It is a different artifact: a corpus that any
+participant — or any agent working on their behalf — can query, that carries advice forward with
+its status attached, and from which documents are *generated* rather than authored.
+
+This site is that alternative, built from the material we actually have.
+
+::: {.callout-note}
+## On the source material
+
+This corpus is built from the April 2026 summary minutes treated as a stand-in for a transcript,
+because no transcript exists. Where the minutes attribute a question or a recommendation to the
+committee as a body rather than to a person, that attribution is preserved — inferring who said
+what would fabricate a record the source cannot support. That gap is the clearest single argument
+for capturing the next meeting properly.
+:::

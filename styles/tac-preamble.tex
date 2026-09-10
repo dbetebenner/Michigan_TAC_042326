@@ -1,0 +1,159 @@
+% ── Michigan TAC — PDF preamble ───────────────────────────────────────────
+% Mirrors styles/_tac-core.scss so the two output channels read as one system.
+% Colour values here are the light-theme tokens from styles/tac-light.scss.
+% Engine: XeLaTeX (fontspec + unicode-math require it).
+
+\RequirePackage{fontspec}
+\RequirePackage{unicode-math}
+\RequirePackage[svgnames]{xcolor}
+\RequirePackage{tcolorbox}
+\tcbuselibrary{most,skins,breakable}
+\RequirePackage{caption}
+\RequirePackage{enumitem}
+\RequirePackage{booktabs}
+\RequirePackage{longtable}
+\RequirePackage{array}
+\RequirePackage{ragged2e}
+\RequirePackage{etoolbox}
+
+% ── Fonts ─────────────────────────────────────────────────────────────────
+% Resolved by family name against system fonts. CI must install Noto and
+% instance Josefin Sans from its variable font — see .github/workflows/publish.yml.
+\setmainfont{Noto Sans}[Scale=1.0, Ligatures=TeX]
+\setsansfont{Noto Sans}[Scale=1.0, Ligatures=TeX]
+% TeX text-ligatures deliberately disabled on mono: in verbatim they turn " into ”
+% and -- into an en-dash, and the ToUnicode table records the substitution, so
+% copy-pasted code no longer parses.
+\setmonofont{Noto Sans Mono}[Scale=0.92, RawFeature={-tlig}]
+\setmathfont{Noto Sans Math}[Scale=1.0, math-style=ISO, bold-style=ISO]
+
+% Ligatures=TeX is required here too, not just on the body font: without it the
+% `` and '' that Pandoc emits for smart quotes stay as literal backticks in any
+% heading set in this family.
+\newfontfamily\HeadingFont[Scale=MatchLowercase, Ligatures=TeX,
+  BoldFont=Josefin Sans SemiBold]{Josefin Sans}
+\newfontfamily\HeadingFontSemiBold[Scale=MatchLowercase, Ligatures=TeX]{Josefin Sans SemiBold}
+\newfontfamily\HeadingFontLight[Scale=MatchLowercase, Ligatures=TeX]{Josefin Sans Light}
+
+% ── Colour tokens (mirror of tac-light.scss :root) ────────────────────────
+\definecolor{SurfacePage}{HTML}{EDEDEB}
+\definecolor{SurfaceElevated}{HTML}{F7F7F6}
+\definecolor{SurfaceCode}{HTML}{FAF2E3}
+\definecolor{SurfaceSubtle}{HTML}{E9E9E7}
+\definecolor{ContentPrimary}{HTML}{14140F}
+\definecolor{ContentSecondary}{HTML}{424240}
+\definecolor{ContentMuted}{HTML}{706964}
+\definecolor{BorderHairline}{HTML}{DCDCDA}
+\definecolor{BorderModerate}{HTML}{C8C8C5}
+\definecolor{InteractivePrimary}{HTML}{434739}
+\definecolor{InteractiveAccent}{HTML}{1F618D}
+\definecolor{VerticalAccent}{HTML}{5A6310}
+\definecolor{EditorialRule}{HTML}{EA8441}
+\definecolor{StatusOpen}{HTML}{1F618D}
+\definecolor{StatusAccepted}{HTML}{4A7C2F}
+\definecolor{StatusDeclined}{HTML}{A33A2A}
+\definecolor{StatusProgress}{HTML}{B06A10}
+
+\pagecolor{SurfacePage}
+\color{ContentSecondary}
+
+% ── Headings in the display face ──────────────────────────────────────────
+\usepackage{sectsty}
+\allsectionsfont{\HeadingFont\color{ContentPrimary}}
+
+% ── Quarto callouts, recoloured to the token set ──────────────────────────
+% Quarto emits its own tcolorbox definitions; these redefine the frame colours
+% so the PDF matches the SCSS rules in _tac-core.scss.
+\definecolor{quarto-callout-color}{HTML}{1F618D}
+\definecolor{quarto-callout-note-color}{HTML}{1F618D}
+\definecolor{quarto-callout-tip-color}{HTML}{4A7C2F}
+\definecolor{quarto-callout-important-color}{HTML}{A33A2A}
+\definecolor{quarto-callout-warning-color}{HTML}{B06A10}
+\definecolor{quarto-callout-caution-color}{HTML}{EA8441}
+\definecolor{quarto-callout-note-color-frame}{HTML}{1F618D}
+\definecolor{quarto-callout-tip-color-frame}{HTML}{4A7C2F}
+\definecolor{quarto-callout-important-color-frame}{HTML}{A33A2A}
+\definecolor{quarto-callout-warning-color-frame}{HTML}{B06A10}
+\definecolor{quarto-callout-caution-color-frame}{HTML}{EA8441}
+
+% ── Recommendation block — the PDF twin of .tac-recommendation ────────────
+\newtcolorbox{tacrec}[1][]{
+  enhanced, breakable,
+  colback=SurfaceSubtle, colframe=InteractiveAccent,
+  boxrule=0pt, leftrule=3pt, arc=2pt,
+  left=9pt, right=9pt, top=7pt, bottom=7pt,
+  before skip=10pt, after skip=10pt,
+  #1
+}
+
+% ── Editorial left-rule — the PDF twin of .di-editorial ───────────────────
+\newtcolorbox{editorial}[1][]{
+  enhanced, breakable,
+  colback=SurfacePage, colframe=EditorialRule,
+  boxrule=0pt, leftrule=2pt, arc=0pt,
+  left=12pt, right=0pt, top=4pt, bottom=4pt,
+  before skip=10pt, after skip=10pt,
+  #1
+}
+
+% ── Code blocks — match the HTML `pre` rule (8pt padding, hairline, r=2pt) ─
+\ifdefined\Shaded
+  \renewenvironment{Shaded}{%
+    \begin{tcolorbox}[
+      enhanced, breakable,
+      colback=SurfaceCode, colframe=BorderHairline,
+      boxrule=0.4pt, arc=2pt,
+      left=8pt, right=8pt, top=8pt, bottom=8pt,
+      before skip=8pt, after skip=8pt
+    ]%
+  }{%
+    \end{tcolorbox}%
+  }
+\fi
+
+% ── Block quotes — match the HTML blockquote rule ─────────────────────────
+\renewenvironment{quote}{%
+  \begin{tcolorbox}[
+    enhanced, breakable,
+    colback=SurfaceSubtle, colframe=InteractiveAccent,
+    boxrule=0pt, leftrule=3pt, arc=2pt,
+    left=9pt, right=9pt, top=6pt, bottom=6pt,
+    before skip=8pt, after skip=8pt
+  ]\itshape\color{ContentSecondary}%
+}{%
+  \end{tcolorbox}%
+}
+
+% ── Captions, lists, tables ───────────────────────────────────────────────
+\captionsetup{font=small, labelfont={bf,color=ContentPrimary},
+              textfont={color=ContentMuted},
+              justification=justified, skip=6pt}
+
+\setlist[itemize]{leftmargin=*, itemsep=0.3em, parsep=0.15em, topsep=0.4em}
+\setlist[enumerate]{leftmargin=*, itemsep=0.3em, parsep=0.15em, topsep=0.4em}
+
+\renewcommand{\arraystretch}{1.25}
+
+% ── Paragraph shape ───────────────────────────────────────────────────────
+\setlength{\parskip}{0.5\baselineskip}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{3em}
+
+% Quarto's callouts are plain tcolorbox environments. By default tcolorbox
+% typesets its contents in a parbox, which zeroes \parskip — so paragraphs
+% inside a callout run together while the surrounding document separates them.
+% parbox=false restores normal paragraph handling inside every box.
+\tcbset{parbox=false}
+
+% ── Stat tiles — the PDF twin of .di-stats / .di-stat ─────────────────────
+% HTML lays these out as a grid; print gets a rule-separated row of figures.
+\newtcolorbox{statrow}[1][]{
+  enhanced, breakable,
+  colback=SurfacePage, colframe=SurfacePage,
+  boxrule=0pt, arc=0pt,
+  left=0pt, right=0pt, top=4pt, bottom=4pt,
+  before skip=10pt, after skip=10pt,
+  #1
+}
+\newcommand{\statvalue}[1]{{\HeadingFont\fontsize{20pt}{22pt}\selectfont\color{ContentPrimary}#1}}
+\newcommand{\statlabel}[1]{{\footnotesize\color{ContentMuted}#1}}

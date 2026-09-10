@@ -1,0 +1,70 @@
+/*-- scss:defaults --*/
+// Michigan TAC — light theme.
+// Palette and type stack follow the dataimago house tokens used across the
+// NCIEA/SGPc Quarto sites. Only Bootstrap variables live in this layer; every
+// component rule is in _tac-core.scss and reads a --color-* custom property,
+// so light and dark differ only in the :root block below.
+
+$body-bg:      #ededeb;   // stone-100
+$body-color:   #424240;   // stone-700
+$link-color:   #434739;   // forest-700
+$primary:      #14140f;   // stone-900
+$code-color:   #913d15;
+
+$font-family-sans-serif: "Noto Sans", "Fira Sans", system-ui, sans-serif;
+$headings-font-family:   "Josefin Sans", system-ui, sans-serif;
+
+$navbar-bg: transparent;
+$navbar-fg: #424240;
+$footer-bg: #14140f;
+
+/*-- scss:rules --*/
+
+:root {
+  /* families */
+  --font-family-display: "Josefin Sans", system-ui, sans-serif;
+  --font-family-sans:    "Noto Sans", "Fira Sans", system-ui, sans-serif;
+  --font-family-mono:    "Noto Sans Mono", "SF Mono", Monaco, monospace;
+  --font-family-math:    "Noto Sans Math", "STIX Two Math", serif;
+
+  /* surfaces */
+  --color-surface-page:     #ededeb;
+  --color-surface-elevated: #f7f7f6;
+  --color-surface-code:     #faf2e3;
+  --color-surface-subtle:   rgba(225, 225, 223, 0.5);
+  --color-surface-hover:    #dcdcda;
+
+  /* content */
+  --color-content-primary:   #14140f;
+  --color-content-secondary: #424240;
+  --color-content-muted:     #706964;
+  --color-content-inverse:   #fdf9f2;
+
+  /* borders */
+  --color-border-hairline: #dcdcda;
+  --color-border-moderate: #c8c8c5;
+
+  /* interactive + accents */
+  --color-interactive-primary: #434739;   /* forest-700 */
+  --color-interactive-hover:   #363a2e;
+  --color-interactive-accent:  #1f618d;   /* eyebrows, emphasis */
+  --color-vertical-accent:     #5a6310;   /* stat rules */
+  --color-editorial-rule:      #ea8441;   /* copper — editorial left-borders */
+
+  /* recommendation status chips */
+  --color-status-open:       #1f618d;
+  --color-status-accepted:   #4a7c2f;
+  --color-status-declined:   #a33a2a;
+  --color-status-progress:   #b06a10;
+
+  /* footer */
+  --color-footer-surface:    #14140f;
+  --color-footer-border:     #292524;
+  --color-footer-text:       #a8a29e;
+  --color-footer-text-hover: #e7e5e4;
+
+  --shadow-card-hover: 0 10px 15px -3px rgba(28, 25, 23, 0.08),
+                       0 4px 6px -4px rgba(28, 25, 23, 0.06);
+}
+
+@import "tac-core";

@@ -1,0 +1,126 @@
+name: Publish site to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "README.md"
+      - "AGENTS.md"
+      - "CLAUDE.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          tinytex: true
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - name: Fonts for the XeLaTeX PDFs
+        # fontspec resolves \setmainfont{Noto Sans} and the Josefin Sans families
+        # against SYSTEM fonts, which the runner lacks. Noto ships in Debian.
+        # Josefin Sans is published upstream ONLY as a variable font, and XeTeX
+        # cannot address its named instances as families — styles/tac-preamble.tex
+        # asks for "Josefin Sans SemiBold" and "Josefin Sans Light" by name — so the
+        # variable font is instanced into real static faces, which fontconfig matches.
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-core fonts-noto-extra
+          FONTDIR="$HOME/.local/share/fonts"; mkdir -p "$FONTDIR"
+          BASE="https://github.com/google/fonts/raw/main/ofl/josefinsans"
+          TMP=$(mktemp -d)
+          curl -fsSL "$BASE/JosefinSans%5Bwght%5D.ttf" -o "$TMP/JosefinSans-var.ttf"
+          python3 -m pip install --quiet --disable-pip-version-check fonttools brotli
+          for W in 300:Light 400:Regular 500:Medium 600:SemiBold 700:Bold; do
+            python3 -m fontTools.varLib.instancer --update-name-table \
+              "$TMP/JosefinSans-var.ttf" "wght=${W%%:*}" \
+              -o "$FONTDIR/JosefinSans-${W##*:}.ttf"
+          done
+          fc-cache -f
+          # Fail loudly here rather than inside a LaTeX log.
+          for fam in "Noto Sans" "Noto Sans Mono" "Noto Sans Math" \
+                     "Josefin Sans" "Josefin Sans Light" "Josefin Sans SemiBold"; do
+            if fc-match "$fam" | grep -qiE 'noto|josefin'; then
+              echo "OK      $fam"
+            else
+              echo "MISSING $fam"; exit 1
+            fi
+          done
+
+      - name: Build the wikilink slug map
+        run: Rscript scripts/build-slugmap.R
+
+      - name: Check corpus link integrity
+        run: ./scripts/check-links.sh
+
+      - name: Check no restricted value has reappeared
+        # The restricted layer is gitignored, so CI cannot see it — but it can
+        # verify that none of its values have found their way back into a
+        # published page. See restricted/README.md.
+        run: ./scripts/check-restricted.sh
+
+      - name: Render PDFs, then the website
+        # ORDER IS LOAD-BEARING: a project render cleans output-dir, so the PDFs
+        # are rendered first, stashed outside _site, and restored afterwards.
+        run: |
+          set -euo pipefail
+          DOCS="documents/meeting-summary-2026-04.qmd documents/ai-native-tac.qmd"
+          STASH=$(mktemp -d)
+          for d in $DOCS; do
+            quarto render "$d" --to pdf
+            pdf="${d%.qmd}.pdf"
+            mkdir -p "$STASH/$(dirname "$pdf")"
+            for cand in "$pdf" "_site/$pdf"; do
+              [ -f "$cand" ] && { cp "$cand" "$STASH/$pdf"; break; }
+            done
+          done
+          quarto render
+          for d in $DOCS; do
+            pdf="${d%.qmd}.pdf"
+            mkdir -p "_site/$(dirname "$pdf")"
+            cp "$STASH/$pdf" "_site/$pdf"
+          done
+
+      - name: Assert the build is complete
+        run: |
+          set -euo pipefail
+          for want in _site/index.html \
+                      _site/wiki/index.html \
+                      _site/documents/meeting-summary-2026-04.html \
+                      _site/documents/meeting-summary-2026-04.pdf \
+                      _site/documents/ai-native-tac.html \
+                      _site/documents/ai-native-tac.pdf; do
+            [ -f "$want" ] || { echo "::error::missing $want"; exit 1; }
+          done
+          echo "corpus pages: $(find _site/wiki -name '*.html' | wc -l)"
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

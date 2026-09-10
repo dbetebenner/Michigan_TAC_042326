@@ -1,0 +1,35 @@
+# ── Bright line: never commit student-level or restricted assessment data ──
+# Appears first and is not to be edited by replacement. Append scoped
+# exceptions BELOW the marker, each with a comment naming what it admits.
+**/student_*.csv
+**/*_student_level.*
+*.env
+*.env.*
+*.pem
+*.key
+
+# Restricted layer — vendor/test-security material. Never committed, never
+# published. See restricted/README.md.
+restricted/
+
+# Regenerable extractions from raw/ (rebuild with scripts/extract-sources.sh)
+raw/**/extracted/
+
+# Quarto build artifacts
+/_site/
+/.quarto/
+/_freeze/
+_slugmap.yml
+*.tex
+!styles/*.tex
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# LLM wiki desktop-app runtime state
+.llm-wiki/
+
+# --- Scoped exceptions (append below; never edit the bright line above) ---
+
+**/*.quarto_ipynb

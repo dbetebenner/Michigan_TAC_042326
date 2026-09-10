@@ -1,0 +1,293 @@
+// ── Michigan TAC — shared component layer ─────────────────────────────────
+// Every rule here reads a --color-* custom property defined by tac-light.scss
+// or tac-dark.scss. Never hardcode a colour in this file; a literal here is a
+// light-mode value that will bleed into dark.
+
+html {
+  font-feature-settings: "kern", "liga", "calt";
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-surface-page);
+  color: var(--color-content-secondary);
+  font-family: var(--font-family-sans);
+  line-height: 1.625;
+}
+
+// ── Typography ────────────────────────────────────────────────────────────
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-display);
+  letter-spacing: -0.025em;
+  color: var(--color-content-primary);
+}
+h1 { font-weight: 600; }
+h2 { font-weight: 500; }
+h3 { font-weight: 400; }
+h4, h5, h6 { font-weight: 300; }
+
+h2 {
+  border-bottom: 1px solid var(--color-border-hairline);
+  padding-bottom: 0.25em;
+  margin-top: 2rem;
+}
+
+a {
+  color: var(--color-interactive-primary);
+  text-decoration: none;
+  transition: color 150ms ease;
+  &:hover { color: var(--color-interactive-hover); text-decoration: underline; }
+}
+
+code, pre, kbd, samp { font-family: var(--font-family-mono); }
+
+code {
+  background-color: var(--color-surface-code);
+  color: var(--color-content-primary);
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+}
+
+pre {
+  background-color: var(--color-surface-code);
+  border: 1px solid var(--color-border-hairline);
+  border-radius: 0.5rem;
+  padding: 8pt;
+  code { background: none; padding: 0; }
+}
+
+math, .math, mjx-container, .katex {
+  font-family: var(--font-family-math) !important;
+}
+
+blockquote {
+  border-left: 3px solid var(--color-interactive-accent);
+  background: var(--color-surface-subtle);
+  padding: 0.6em 1em;
+  margin: 1em 0;
+  color: var(--color-content-secondary);
+  p:last-child { margin-bottom: 0; }
+}
+
+::selection {
+  background-color: var(--color-interactive-accent);
+  color: var(--color-content-inverse);
+}
+:focus-visible {
+  outline: 2px solid var(--color-interactive-primary);
+  outline-offset: 2px;
+}
+
+// Keep prose to a readable measure; tables and figures may exceed it.
+#quarto-document-content > p,
+#quarto-document-content > ul,
+#quarto-document-content > ol,
+main.content > p,
+main.content > ul,
+main.content > ol { max-width: 74ch; }
+
+// ── Tables ────────────────────────────────────────────────────────────────
+
+table {
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.94em;
+}
+thead th {
+  font-family: var(--font-family-display);
+  font-weight: 600;
+  color: var(--color-content-primary);
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 2px solid var(--color-border-moderate);
+}
+tbody td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--color-border-hairline);
+  vertical-align: top;
+}
+tbody tr:hover { background-color: var(--color-surface-hover); }
+
+.table-responsive, .quarto-figure > figure { overflow-x: auto; }
+
+// ── Signature typographic moves ───────────────────────────────────────────
+
+.di-eyebrow {
+  font-family: var(--font-family-mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-interactive-accent);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.di-lede {
+  font-size: 1.1rem;
+  max-width: 72ch;
+  color: var(--color-content-secondary);
+}
+
+.di-editorial {
+  border-left: 2px solid var(--color-editorial-rule);
+  padding-left: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+// ── Stat tiles ────────────────────────────────────────────────────────────
+
+.di-stats {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  margin: 2rem 0;
+}
+@media (min-width: 768px) {
+  .di-stats { grid-template-columns: repeat(4, 1fr); }
+  .di-stats-3 { grid-template-columns: repeat(3, 1fr); }
+}
+.di-stat {
+  border-left: 2px solid var(--color-vertical-accent);
+  padding-left: 1rem;
+  .di-stat-value {
+    font-family: var(--font-family-display);
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    color: var(--color-content-primary);
+    font-variant-numeric: tabular-nums;
+    display: block;
+  }
+  .di-stat-label {
+    margin-top: 0.375rem;
+    font-size: 0.85rem;
+    color: var(--color-content-muted);
+    line-height: 1.4;
+    display: block;
+  }
+}
+
+// ── Cards ─────────────────────────────────────────────────────────────────
+
+.di-cards {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: 1fr;
+  margin: 2rem 0;
+}
+@media (min-width: 768px) {
+  .di-cards { grid-template-columns: repeat(3, 1fr); }
+  .di-cards-2 { grid-template-columns: repeat(2, 1fr); }
+}
+.di-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border-hairline);
+  border-radius: 0.75rem;
+  background-color: var(--color-surface-elevated);
+  padding: 1.5rem;
+  transition: box-shadow 150ms ease;
+  &:hover { box-shadow: var(--shadow-card-hover); }
+  h3 { font-size: 1.2rem; font-weight: 500; margin: 0 0 0.5rem 0; }
+  p:last-child { margin-bottom: 0; }
+}
+
+// ── Recommendation block ──────────────────────────────────────────────────
+
+.tac-recommendation {
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border-hairline);
+  border-left: 4px solid var(--color-interactive-accent);
+  border-radius: 0.375rem;
+  padding: 0.9rem 1.1rem;
+  margin: 1.25rem 0;
+  p:last-child { margin-bottom: 0; }
+}
+
+.tac-status {
+  display: inline-block;
+  font-family: var(--font-family-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.25rem;
+  color: var(--color-content-inverse);
+  background: var(--color-status-open);
+  vertical-align: middle;
+
+  &.accepted { background: var(--color-status-accepted); }
+  &.declined { background: var(--color-status-declined); }
+  &.progress { background: var(--color-status-progress); }
+}
+
+// ── Callouts — recolour Quarto's native components to the token set ───────
+
+div.callout {
+  border-radius: 0.375rem;
+  border-color: var(--color-border-hairline);
+}
+div.callout .callout-body,
+div.callout .callout-title {
+  background-color: var(--color-surface-elevated);
+}
+div.callout .callout-title {
+  font-family: var(--font-family-display);
+  font-weight: 600;
+  color: var(--color-content-primary);
+  border-bottom: 1px solid var(--color-border-hairline);
+}
+div.callout-note.callout       { border-left-color: var(--color-interactive-accent); }
+div.callout-tip.callout        { border-left-color: var(--color-status-accepted); }
+div.callout-important.callout  { border-left-color: var(--color-status-declined); }
+div.callout-warning.callout    { border-left-color: var(--color-status-progress); }
+div.callout-caution.callout    { border-left-color: var(--color-editorial-rule); }
+
+// ── Navbar, footer, TOC ───────────────────────────────────────────────────
+
+.navbar {
+  border-bottom: 1px solid var(--color-border-hairline);
+  backdrop-filter: blur(4px);
+  .navbar-brand { font-family: var(--font-family-display); font-weight: 600; }
+}
+
+.nav-footer {
+  background-color: var(--color-footer-surface);
+  color: var(--color-footer-text);
+  border-top: 1px solid var(--color-footer-border);
+  a { color: var(--color-footer-text); &:hover { color: var(--color-footer-text-hover); } }
+}
+
+#TOC, .sidebar nav[role="doc-toc"] {
+  font-size: 0.88rem;
+  a { color: var(--color-content-muted); }
+  a:hover, a.active { color: var(--color-interactive-accent); }
+}
+
+// ── Accessibility ─────────────────────────────────────────────────────────
+
+.skip-link { position: absolute; left: -9999px; }
+.skip-link:focus {
+  position: fixed; top: 1rem; left: 1rem; z-index: 100;
+  background: var(--color-footer-surface);
+  color: var(--color-footer-text-hover);
+  padding: 0.75rem 1.25rem; border-radius: 0.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+@media print {
+  a { text-decoration: none; }
+  .navbar, .nav-footer, #TOC { display: none; }
+}

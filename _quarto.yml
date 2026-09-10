@@ -1,0 +1,106 @@
+project:
+  type: website
+  title: "Michigan TAC — AI-Native Meeting Corpus"
+  output-dir: _site
+  render:
+    - "index.qmd"
+    - "documents/*.qmd"
+    - "wiki/**/*.md"
+    - "!README.md"
+    - "!AGENTS.md"
+    - "!CLAUDE.md"
+
+metadata-files:
+  - _slugmap.yml
+
+filters:
+  - filters/wikilinks.lua
+
+website:
+  title: "Michigan TAC"
+  description: >
+    A demonstration corpus for the Michigan OEAA/OEE Technical Advisory Committee —
+    the April 23–24, 2026 meeting as a navigable knowledge base, with a comprehensive
+    meeting summary and a brief on making the TAC cycle AI-native.
+  site-url: "https://dbetebenner.github.io/Michigan_TAC_042326/"
+  repo-url: "https://github.com/dbetebenner/Michigan_TAC_042326"
+  page-navigation: true
+  open-graph: true
+  navbar:
+    pinned: true
+    search: true
+    left:
+      - href: index.qmd
+        text: Home
+      - href: documents/meeting-summary-2026-04.qmd
+        text: Meeting Summary
+      - href: documents/ai-native-tac.qmd
+        text: AI-Native TAC
+      - href: wiki/index.md
+        text: Corpus
+    right:
+      - icon: github
+        href: https://github.com/dbetebenner/Michigan_TAC_042326
+        aria-label: Repository on GitHub
+  sidebar:
+    - id: corpus
+      title: "Corpus"
+      style: floating
+      collapse-level: 2
+      contents:
+        - wiki/index.md
+        - wiki/glossary.md
+        - section: "Meeting"
+          contents:
+            - wiki/meetings/2026-04-23-tac-meeting.md
+        - section: "Sessions"
+          contents: wiki/sessions/*.md
+        - section: "Topics"
+          contents: wiki/topics/*.md
+        - section: "Recommendations"
+          contents: wiki/recommendations/*.md
+        - section: "Open questions"
+          contents: wiki/questions/*.md
+        - section: "Source documents"
+          contents: wiki/artifacts/*.md
+        - section: "People"
+          contents: wiki/people/*.md
+        - section: "Organizations"
+          contents: wiki/organizations/*.md
+        - section: "Conventions"
+          contents:
+            - wiki/schema.md
+            - wiki/log.md
+  page-footer:
+    left: "Michigan OEAA/OEE Technical Advisory Committee — corpus for the April 23–24, 2026 meeting"
+    right:
+      - text: "GitHub"
+        href: https://github.com/dbetebenner/Michigan_TAC_042326
+      - text: "Corpus index"
+        href: wiki/index.md
+
+format:
+  html:
+    theme:
+      light: [cosmo, styles/tac-light.scss]
+      dark: [cosmo, styles/tac-dark.scss]
+    toc: true
+    toc-depth: 3
+    toc-expand: 2
+    code-copy: true
+    code-overflow: wrap
+    link-external-newwindow: true
+    html-math-method: mathml
+    include-in-header:
+      text: |
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Mono:wght@400;500&family=Noto+Sans+Math&display=swap" rel="stylesheet">
+    include-before-body:
+      text: |
+        <a class="skip-link" href="#quarto-content">Skip to content</a>
+
+execute:
+  echo: false
+  warning: false
+  freeze: false
