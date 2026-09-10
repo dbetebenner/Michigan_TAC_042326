@@ -237,8 +237,13 @@ structure of its own science subtests, and it bears on every subscore decision t
 
 ### What that looks like in code
 
-Sketched against the `copula` package, in the idiom of the sensitivity study. Nothing here is
-run — it is meant as a starting point to argue with, not a specification.
+Against the `copula` package, in the idiom of the sensitivity study. It is a starting point to
+argue with rather than a specification — but it does run: everything below executes end to end
+on `copula` 1.1.7 with a simulated stand-in for the extract, so the API calls and the shapes are
+right even though the numbers are not yours.
+
+Two things it needs from you: the extract itself as `dt_g11`, and `qgmm()` — the inverse CDF of
+your fitted mixture, which is marginal machinery already in the pipeline.
 
 ```r
 library(copula)
@@ -289,15 +294,8 @@ assumption:
 
 ```r
 ## 4. The structure, pair by pair ------------------------------------------
-best <- fits$t
-
-## Fitted correlation matrix, and the Kendall's tau it implies. For an
-## elliptical copula tau = (2/pi) * asin(rho), so this is exact rather than a
-## sample estimate. If the three off-diagonals differ materially, the single
-## correlation used in Batch 1 was averaging over real structure — and it
-## speaks directly to "why is life science different from the others?"
-P <- p2P(coef(best)[1:3], d = 3)
-tau_implied <- (2 / pi) * asin(P)
+best  <- fits$t
+pairs <- apply(combn(colnames(X), 2), 2, paste, collapse = "-")
 
 ## Degrees of freedom: the t-copula's tail-dependence dial. Large df means it is
 ## behaving Gaussian and the family choice barely matters here. Small df means
@@ -305,17 +303,23 @@ tau_implied <- (2 / pi) * asin(P)
 ## that would change the classification results.
 coef(best)[["df"]]
 
-## Tail dependence, per pair. lambda() is bivariate, so take it off the
-## two-dimensional margins. lambda_lower is the one that matters most: it is the
-## probability of joint low performance, and the Below Standard cut sits there.
-rbindlist(lapply(combn(3, 2, simplify = FALSE), function(ij) {
-  f2 <- fitCopula(tCopula(dim = 2), U[, ij], method = "mpl")
-  l  <- lambda(f2@copula)
-  data.table(pair         = paste(colnames(X)[ij], collapse = "-"),
-             tau          = tau(f2@copula),
-             lambda_lower = l[["lower"]],
-             lambda_upper = l[["upper"]])
-}))
+## Everything else comes off the fitted trivariate object directly. getSigma()
+## returns the correlation matrix; tau() and lambda() return one value per pair,
+## ordered the same way as combn() above — (1,2), (1,3), (2,3).
+##
+## Read lambda_lower first. It is the probability of joint low performance, and
+## the Below Standard cut sits exactly there. A Gaussian copula forces it to zero
+## by construction, which is the assumption this whole exercise is testing.
+P   <- getSigma(best@copula)
+lam <- lambda(best@copula)
+
+data.table(
+  pair         = pairs,
+  rho          = P[lower.tri(P)],
+  tau          = tau(best@copula),
+  lambda_lower = lam[paste0("lower", seq_along(pairs))],
+  lambda_upper = lam[paste0("upper", seq_along(pairs))]
+)
 ```
 
 And the substitution into the existing simulation, which is the part I want to stress is

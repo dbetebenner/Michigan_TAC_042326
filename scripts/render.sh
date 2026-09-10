@@ -9,7 +9,12 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 echo "==> Regenerating wikilink slug map"
-Rscript scripts/build-slugmap.R
+# --vanilla: a user ~/.Rprofile that sets options(error = ...) makes Rscript
+# exit 0 on error, which would let a failed slug map pass silently.
+Rscript --vanilla scripts/build-slugmap.R
+
+echo "==> Checking the memo's R actually runs"
+./scripts/check-memo-r.sh
 
 echo "==> Checking corpus link integrity"
 ./scripts/check-links.sh

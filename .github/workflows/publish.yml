@@ -103,7 +103,7 @@ jobs:
           done
 
       - name: Build the wikilink slug map
-        run: Rscript scripts/build-slugmap.R
+        run: Rscript --vanilla scripts/build-slugmap.R
 
       - name: Check corpus link integrity
         run: ./scripts/check-links.sh
