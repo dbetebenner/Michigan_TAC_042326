@@ -128,6 +128,11 @@ jobs:
             done
           done
           quarto render
+          # Surface any font substitution XeTeX made. unicode-math warns rather
+          # than errors when \setmathfont gets a font it cannot use, so the log is
+          # the only place that decision is visible before the PDF is inspected.
+          grep -rhiE "Font .*not found|no OpenType MATH|Missing character|falling back" \
+            wiki/analyses/*.log documents/*.log 2>/dev/null | head -20 || true
           for d in $DOCS; do
             pdf="${d%.*}.pdf"
             mkdir -p "_site/$(dirname "$pdf")"

@@ -52,6 +52,8 @@ for pdf in _site/documents/*.pdf _site/wiki/analyses/*.pdf; do
     else
       echo "MISSING MATH FONT IN $name"
       echo "    This document contains mathematics but embeds no Noto Sans Math."
+      echo "    Fonts actually embedded:"
+      printf '%s\n' "$fonts" | sed 's/^/      /'
       fail=1
     fi
   else
