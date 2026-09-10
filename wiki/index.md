@@ -27,6 +27,14 @@ state do?* High school growth targets, licensure form security, and subscore rep
 instances. The committee's answers rhymed — define the inference you are defending, then choose
 the instrument.
 
+## Between meetings
+
+The corpus's reason to exist. Member work developed from the record rather than waiting for the
+next convening — see [[schema]] on the `analyses/` type.
+
+- [[copula-approach-to-subtest-indicators]] — Betebenner to Zeng, September 2026: what the
+  subscore study's research question actually is, and whether a copula helps answer it
+
 ## Standing topics
 
 These outlive any single meeting and are the unit of institutional memory.

@@ -72,6 +72,15 @@ currently stated in the document itself.
 
 Both draft examples end with "Additional blueprint information can be found at XXXXXX."
 
+## A route to quantifying "could"
+
+Michigan holds interim and M-STEP scores on many of the same students, which is what makes a
+concordance possible at all — but the table maps band to band, discarding the joint
+distribution. [[copula-approach-to-subtest-indicators]] observes that a copula fitted to that
+pair yields the conditional distribution of the M-STEP score given an interim score, turning
+"could score" into a statement with a measured spread. Same machinery as the subscore problem,
+different pair, data already collected.
+
 ## History
 
 | Meeting | What moved |

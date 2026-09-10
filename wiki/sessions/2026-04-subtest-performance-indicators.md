@@ -120,6 +120,11 @@ report along with parameters for what the report is trying to achieve. The commi
 it in April 2026, unprompted, as a score-reporting design tool. It is the only mention of AI
 in the meeting.
 
+## Since the meeting
+
+[[copula-approach-to-subtest-indicators]] — a written response from a committee member,
+September 2026, addressed to the presenter.
+
 ## Open questions
 
 [[q-subscore-score-report-appearance]] · [[q-subscore-correlation-structure]]

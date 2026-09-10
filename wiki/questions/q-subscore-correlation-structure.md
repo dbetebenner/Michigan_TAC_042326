@@ -32,4 +32,9 @@ This is the same objection as [[rec-subscore-model-joint-density]] arriving from
 direction, and it is why [[rec-subscore-review-item-parameters]] was set as a precondition for a
 third batch.
 
+**A route to an answer.** [[copula-approach-to-subtest-indicators]] notes that under a copula
+formulation this stops being a limitation and becomes a specification choice — a t-copula with a
+full correlation matrix, or a vine if the pairwise structure is genuinely asymmetric — and that
+the per-pair Kendall's tau falling out of the fit answers the life-science question directly.
+
 **Related.** [[m-step-subscore-reporting]]

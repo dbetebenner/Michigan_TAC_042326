@@ -199,6 +199,28 @@ able to ask questions of the deck rather than only of the presenter. A member wh
 what changed since April gets an answer from the corpus in a sentence rather than by rereading two
 documents on a plane.
 
+::: {.callout-tip}
+## This one is no longer hypothetical
+
+[*A Copula Approach to the Subtest Indicator Problem*](../wiki/analyses/copula-approach-to-subtest-indicators.md)
+is a worked response to Ji Zeng's April session, written from the corpus five months after the
+meeting and addressed to her by name.
+
+It exists because of the capture this brief argues for. It separates four research questions the
+session conflated, identifies that the committee's own joint-density recommendation is a copula
+recommendation without the vocabulary, and proposes a bounded check on data Michigan already
+holds — and it turns on the Batch 2 gradient, which lives entirely in chart images and reaches no
+other record of the meeting.
+
+It took minutes to assemble from the corpus. It could not have been assembled from the minutes at
+all, and re-reading a fifty-two-page PDF would not have surfaced it either.
+
+It is also the artifact the current process has nowhere to put. A TAC member's considered
+technical response, developed between meetings, currently has no home: it arrives as an email, or
+it waits five months and arrives as a remark. The corpus gives it a page, a type, and a link from
+every recommendation it bears on.
+:::
+
 ### During the meeting
 
 The meeting is **recorded and transcribed**. This is the one genuine change in participant

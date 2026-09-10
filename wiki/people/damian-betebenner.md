@@ -28,6 +28,10 @@ collaborate with [[ji-zeng]] on her subscore work —
 [[rec-subscore-support-zeng-collaboration]]. The minutes render this as "Damion Betebenner"; the
 name is corrected in this corpus.
 
+**Between meetings.** Author of [[copula-approach-to-subtest-indicators]], a worked response to
+Session 5 developed from the corpus in September 2026 — the concrete form of the collaboration
+offered in April.
+
 **Note on this corpus.** This repo was built by Betebenner as a demonstration for the
 September 10, 2026 TAC meeting, so he is both a subject of the record and its compiler. The
 argument the corpus makes is set out in `documents/ai-native-tac.qmd`.

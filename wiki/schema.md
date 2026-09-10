@@ -33,9 +33,21 @@ is measured over years, not meeting days, and only this page type makes that mea
 | topic | `topics/` | A standing thread that outlives any one meeting — the unit of institutional memory |
 | recommendation | `recommendations/` | One discrete piece of TAC advice, with status and reasoning |
 | question | `questions/` | An open question posed but not resolved, or a "bring this next time" item |
+| analysis | `analyses/` | A member's worked response, developed **between** meetings — the artifact the current process has no place for |
 | person | `people/` | A participant: role, affiliation, sessions, standing interests |
 | organization | `organizations/` | A body appearing in the record: MDE, DRC, Pearson, Smarter Balanced, … |
 | glossary | `glossary.md` | Acronyms and terms of art, for retrieval grounding |
+
+### A note on `analyses/`
+
+Every other page type records what happened at a meeting. `analyses/` records what a member
+worked out afterwards, from the corpus, without waiting for the next convening. It is the
+only type that is **individually attributed** — and it can be, because it is authored rather
+than minuted. Everywhere else the source attributes to a body and this corpus honours that.
+
+An analysis page states who wrote it, what it responds to, and what it is asking the presenter
+to do. It is a contribution to the record, not a summary of it, and it should be readable by
+the person it addresses.
 
 ## One fact, one page
 

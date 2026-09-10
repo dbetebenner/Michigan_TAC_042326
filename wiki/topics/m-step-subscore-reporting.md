@@ -101,6 +101,16 @@ Reporting the certainty is what makes "least bad" honest rather than merely less
 No hard timeline, but a decision must be made in the **spring** for the following year's
 results.
 
+## Between meetings
+
+[[copula-approach-to-subtest-indicators]] — Betebenner's worked response, September 2026.
+Separates the four research questions the deck conflates, argues that the Batch 2 gradient
+rather than the CT-PO/SBAC comparison is the finding OEAA needs, and proposes a bounded copula
+check on data already in hand. Notes that the committee's own joint-density recommendation is a
+copula recommendation without the vocabulary, and that the dependence structure currently
+assumed — a Gaussian copula — was the best-fitting family in about 2% of conditions across 966
+tested on four longitudinal datasets.
+
 ## History
 
 | Meeting | What moved |

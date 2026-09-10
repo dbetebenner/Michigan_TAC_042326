@@ -36,6 +36,12 @@ rather than assuming it away at the start.
 **Companion.** [[rec-subscore-establish-scale-then-cuts]] gives the operational ordering;
 [[rec-subscore-review-item-parameters]] is the prerequisite check.
 
+**Since the meeting.** [[copula-approach-to-subtest-indicators]] argues this recommendation
+describes a copula in everything but name — Sklar's theorem factors a joint distribution into
+its marginals and a copula carrying all the dependence, which is precisely "go from joint
+density to the marginals... faithful to the joint density." It sets out a bounded way to act on
+it using data already collected.
+
 **Status.** Open. Directly connected to
 [[rec-subscore-support-zeng-collaboration]].
 

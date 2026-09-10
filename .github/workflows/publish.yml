@@ -54,13 +54,34 @@ jobs:
               -o "$FONTDIR/JosefinSans-${W##*:}.ttf"
           done
           fc-cache -f
+          # Noto Sans Math carries every glyph in the PDFs' math, via \setmathfont
+          # in styles/tac-preamble.tex. It is not in every Noto package, so fetch it
+          # if the distro did not supply it.
+          if ! fc-match -f '%{family}' "Noto Sans Math" | grep -qx "Noto Sans Math"; then
+            echo "Noto Sans Math not supplied by apt — fetching from google/fonts"
+            curl -fsSL "https://github.com/google/fonts/raw/main/ofl/notosansmath/NotoSansMath%5Bwght%5D.ttf" \
+              -o "$FONTDIR/NotoSansMath.ttf" \
+            || curl -fsSL "https://github.com/google/fonts/raw/main/ofl/notosansmath/NotoSansMath-Regular.ttf" \
+              -o "$FONTDIR/NotoSansMath.ttf"
+            fc-cache -f
+          fi
+
           # Fail loudly here rather than inside a LaTeX log.
+          #
+          # Match on the EXACT family fontconfig resolves to, not on a substring.
+          # `fc-match "Noto Sans Math" | grep noto` passes even when the font is
+          # absent, because fontconfig falls back to some other Noto face and the
+          # substring still matches — the PDF then silently renders math in the
+          # wrong glyphs. Compare the resolved family to the requested one instead.
           for fam in "Noto Sans" "Noto Sans Mono" "Noto Sans Math" \
                      "Josefin Sans" "Josefin Sans Light" "Josefin Sans SemiBold"; do
-            if fc-match "$fam" | grep -qiE 'noto|josefin'; then
+            got=$(fc-match -f '%{family}' "$fam")
+            # fontconfig may report a comma-separated family list; accept an exact
+            # match on any member.
+            if printf '%s' "$got" | tr ',' '\n' | grep -qx "$fam"; then
               echo "OK      $fam"
             else
-              echo "MISSING $fam"; exit 1
+              echo "MISSING $fam  (fontconfig resolved to: $got)"; exit 1
             fi
           done
 
@@ -81,11 +102,11 @@ jobs:
         # are rendered first, stashed outside _site, and restored afterwards.
         run: |
           set -euo pipefail
-          DOCS="documents/meeting-summary-2026-04.qmd documents/ai-native-tac.qmd"
+          DOCS="documents/meeting-summary-2026-04.qmd documents/ai-native-tac.qmd wiki/analyses/copula-approach-to-subtest-indicators.md"
           STASH=$(mktemp -d)
           for d in $DOCS; do
             quarto render "$d" --to pdf
-            pdf="${d%.qmd}.pdf"
+            pdf="${d%.*}.pdf"
             mkdir -p "$STASH/$(dirname "$pdf")"
             for cand in "$pdf" "_site/$pdf"; do
               [ -f "$cand" ] && { cp "$cand" "$STASH/$pdf"; break; }
@@ -93,7 +114,7 @@ jobs:
           done
           quarto render
           for d in $DOCS; do
-            pdf="${d%.qmd}.pdf"
+            pdf="${d%.*}.pdf"
             mkdir -p "_site/$(dirname "$pdf")"
             cp "$STASH/$pdf" "_site/$pdf"
           done
@@ -106,7 +127,8 @@ jobs:
                       _site/documents/meeting-summary-2026-04.html \
                       _site/documents/meeting-summary-2026-04.pdf \
                       _site/documents/ai-native-tac.html \
-                      _site/documents/ai-native-tac.pdf; do
+                      _site/documents/ai-native-tac.pdf \
+                      _site/wiki/analyses/copula-approach-to-subtest-indicators.pdf; do
             [ -f "$want" ] || { echo "::error::missing $want"; exit 1; }
           done
           echo "corpus pages: $(find _site/wiki -name '*.html' | wc -l)"

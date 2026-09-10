@@ -59,8 +59,37 @@ pre {
   code { background: none; padding: 0; }
 }
 
+// ── Math ──────────────────────────────────────────────────────────────────
+// Noto Sans Math is the math face in both output channels: here for HTML, and
+// via \setmathfont in styles/tac-preamble.tex for PDF. Same family, same glyphs.
+//
+// Three sources, in order of preference. local() uses an installed copy with no
+// network at all; the bundled woff2 covers a machine without one; the Google Fonts
+// link in _quarto.yml is the remaining fallback.
+//
+// The url() is resolved by Quarto against the PROJECT ROOT — not against this
+// file, and not against the compiled CSS. (Verified: "../assets/..." resolved to
+// the repo's parent directory, "../../assets/..." to its grandparent.) Quarto
+// scans url() in SCSS, copies the file as a theme dependency, and rewrites the
+// reference in the output, which is what keeps it correct at every page depth and
+// under a GitHub Pages subpath.
+@font-face {
+  font-family: "Noto Sans Math";
+  src: local("Noto Sans Math"),
+       url("assets/fonts/NotoSansMath.woff2") format("woff2");
+  font-display: swap;
+}
+
 math, .math, mjx-container, .katex {
   font-family: var(--font-family-math) !important;
+}
+
+// Display equations get a little air and sit centred.
+.math.display, math[display="block"] {
+  display: block;
+  text-align: center;
+  margin: 1.1em 0;
+  font-size: 1.05em;
 }
 
 blockquote {

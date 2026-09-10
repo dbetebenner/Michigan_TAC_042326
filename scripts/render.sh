@@ -17,7 +17,12 @@ echo "==> Checking corpus link integrity"
 echo "==> Checking no restricted value has reappeared"
 ./scripts/check-restricted.sh
 
-DOCS=(documents/meeting-summary-2026-04.qmd documents/ai-native-tac.qmd)
+# Sources rendered to PDF as well as HTML. The analysis page is a memo addressed
+# to a named presenter, and is the only page carrying mathematics -- it is what
+# exercises the Noto Sans Math path in the PDF channel.
+DOCS=(documents/meeting-summary-2026-04.qmd
+      documents/ai-native-tac.qmd
+      wiki/analyses/copula-approach-to-subtest-indicators.md)
 STASH=$(mktemp -d)
 trap 'rm -rf "$STASH"' EXIT
 
@@ -26,7 +31,7 @@ for d in "${DOCS[@]}"; do
   [ -f "$d" ] || { echo "    missing $d, skipping"; continue; }
   echo "    $d"
   quarto render "$d" --to pdf
-  pdf="${d%.qmd}.pdf"
+  pdf="${d%.*}.pdf"
   # A single-file render writes next to the source; a project render writes to
   # _site. Handle both.
   for cand in "$pdf" "_site/$pdf"; do
@@ -39,7 +44,7 @@ quarto render
 
 echo "==> Restoring PDFs into _site"
 for d in "${DOCS[@]}"; do
-  pdf="${d%.qmd}.pdf"
+  pdf="${d%.*}.pdf"
   if [ -f "$STASH/$pdf" ]; then
     mkdir -p "_site/$(dirname "$pdf")"
     cp "$STASH/$pdf" "_site/$pdf"
@@ -55,7 +60,7 @@ done
 for d in "${DOCS[@]}"; do
   [ -f "$d" ] || continue
   for ext in html pdf; do
-    w="_site/${d%.qmd}.$ext"
+    w="_site/${d%.*}.$ext"
     [ -f "$w" ] || { echo "    MISSING $w"; fail=1; }
   done
 done

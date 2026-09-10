@@ -2,6 +2,10 @@ project:
   type: website
   title: "Michigan TAC — AI-Native Meeting Corpus"
   output-dir: _site
+  # No resources: entry for assets/fonts/ — Quarto scans the url() in
+  # styles/_tac-core.scss, copies NotoSansMath.woff2 alongside the compiled theme
+  # CSS, and rewrites the reference. An explicit entry only produces a second,
+  # unreferenced copy.
   render:
     - "index.qmd"
     - "documents/*.qmd"
@@ -53,6 +57,8 @@ website:
         - section: "Meeting"
           contents:
             - wiki/meetings/2026-04-23-tac-meeting.md
+        - section: "Between meetings"
+          contents: wiki/analyses/*.md
         - section: "Sessions"
           contents: wiki/sessions/*.md
         - section: "Topics"

@@ -28,4 +28,6 @@ science subtest distributions are not normal.
 The committee described the work as "very sophisticated" and offered support:
 [[rec-subscore-support-zeng-collaboration]].
 
+[[copula-approach-to-subtest-indicators]] is a response to her session, addressed to her.
+
 **Related.** [[m-step-subscore-reporting]]
