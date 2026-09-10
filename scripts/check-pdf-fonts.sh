@@ -12,6 +12,16 @@
 set -uo pipefail
 cd "$(dirname "$0")/.."
 
+# Refuse to run without the tool rather than degrade silently. Reading pdffonts
+# output through `2>/dev/null` when pdffonts is absent yields an empty font list,
+# which looks exactly like "the font is missing" — this check reported a false
+# failure on CI for precisely that reason before this guard existed.
+if ! command -v pdffonts >/dev/null 2>&1; then
+  echo "check-pdf-fonts: pdffonts not found (install poppler-utils)." >&2
+  echo "  Refusing to report on fonts it cannot read." >&2
+  exit 2
+fi
+
 # Latin Modern and Computer Modern are never intentional in this design. Their
 # appearance means a fontspec or unicode-math fallback fired somewhere.
 FORBIDDEN='LatinModernMath|LMMath|LMRoman|CMSS|ComputerModern|CMR[0-9]|CMMI'
